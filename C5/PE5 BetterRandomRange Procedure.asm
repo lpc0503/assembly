@@ -17,6 +17,7 @@ main PROC
     mov ebx, -300
     mov eax, 100
     call BetterRandomRange
+    call dumpregs
     call writeint
     call crlf
 
