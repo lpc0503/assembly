@@ -75,5 +75,4 @@ STCOLOR PROC USES eax
 
 STCOLOR ENDP
 
-
 END main

@@ -24,7 +24,10 @@ MAIN PROC
 	call WriteString
 	mov ecx, input
 	mov ebx, 0
-	call Randomize
+	;call Randomize
+	NEXT:
+		mov ebx, eax
+		call DumpRegs
 	L1:
 		mov eax, 99
 		call RandomRange
@@ -32,21 +35,17 @@ MAIN PROC
 		call WriteDec
 		call crlf
 		cmp ebx, eax
-		;call dumpregs
-		jl CHANGE
+		call DumpRegs
+		jc NEXT
 	loop L1
-		CHANGE:
-		mov ebx, eax
-		call dumpregs
-	loop L1
-	
+
 	call crlf
 
-	; mov edx, OFFSET str3
-	; call WriteString
-	; mov eax, ebx
-	; call WriteDec
-	; call crlf
+	mov edx, OFFSET str3
+	call WriteString
+	mov eax, ebx
+	call WriteDec
+	call crlf
 
 	exit
 
