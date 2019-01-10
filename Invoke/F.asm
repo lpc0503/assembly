@@ -5,20 +5,19 @@ Includelib \masm32\lib\Irvine32.lib
 includelib \masm32\lib\Kernel32.lib
 includelib \masm32\lib\User32.lib
 
+;in IDE mod:
+;TITLE MASM(test.asm)
+;include Irvine32.inc
 
 .data
 	
-	intput BYTE "Enter two numbers(intervals): ",0dh,0ah,0
-	output1 BYTE "Armstrong numbers between ",0
-	output2 BYTE " and ",0
-	output3 BYTE " are: ",0
-	output4 BYTE " ",0
-	one DWORD 0
-	two DWORD 0
+	intput BYTE "Enter an integer: ",0dh,0ah,0
+	output1 BYTE " is an Armstrong number.",0dh,0ah,0
+	output2 BYTE " is not an Armstrong number.",0dh,0ah,0
+	num DWORD 0
 	tmp DWORD 0
 	ans DWORD 0
 	len DWORD 0
-	recode DWORD 0
 	
 Armstrong PROTO,
 	number: DWORD
@@ -29,33 +28,20 @@ main PROC
 	mov edx,offset intput
 	call writestring
 	call readint
-	mov one,eax
-	call readint
-	mov two,eax
+	mov num,eax
 
-	mov edx,offset output1
-	call writestring
-	mov eax,one
+	invoke Armstrong,num
+
+	mov eax,ans
+	.if( num == eax )
+		mov edx,offset output1
+	.else
+		mov edx,offset output2
+	.endif
+
+	mov eax,num
 	call writedec
-	mov edx,offset output2
 	call writestring
-	mov eax,two
-	call writedec
-	mov edx,offset output3
-	call writestring
-
-	mov ecx,5
-	L5:
-		invoke Armstrong,one
-		add one,1
-		mov ecx,5
-		mov eax,one
-		.if(eax>two)
-			mov ecx,1
-		.endif
-	loop L5
-
-	call crlf
 
 	exit
 	
@@ -66,9 +52,7 @@ Armstrong PROC,
 
 	mov ecx,1000
 	mov eax,number
-	mov recode,eax
-	mov len,0
-	mov ans,0
+
 	L1:
 		mov edx,0
 		mov ebx,10
@@ -103,14 +87,6 @@ Armstrong PROC,
 			add ecx,1
 		.endif
 	loop L2
-
-	mov eax,ans
-	.if( recode == eax )
-		call writedec
-		mov edx,offset output4
-		call writestring
-	.endif
-
 	ret
 Armstrong ENDP
 
